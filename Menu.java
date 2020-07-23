@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Menu {
 	private RailFenceCypher rf = new RailFenceCypher();
-	//private FileHandler fh = new FileHandler();
+	private FileHandler fh = new FileHandler();
 	private Scanner s;
 	private boolean keepRunning = true;
 	
@@ -23,12 +23,12 @@ public class Menu {
 
 		while (keepRunning) {
 			printMenu();
-			
 			//Blocking method
 			int choice = Integer.parseInt(s.next());
 
 			if (choice == 1) {
 				this.selectFile();
+				//Using recursion to keep menu open
 				go();
 				
 			} else if (choice == 2) {
@@ -70,40 +70,42 @@ public class Menu {
 
 	private void selectFile() {
 		System.out.println("Enter file or URL>");
+		plainText = fh.fileText;	
 
 	}
 	
 	private void getTextForEncrypt() {
-		System.out.println("Enter text to be encrypted");
+		System.out.println("Enter text to be encrypted>");
 		plainText = s.next();		
 	}
 
 
 	private void getEnteredKey() {
-		System.out.println("Enter the encryption key>");
+		System.out.println("Enter the desired number of rails>");
 		key = s.nextInt();
 	}
 	
 	private void getOffset() {
 		System.out.println("Enter the desired offset>");
+		System.out.println("(If no offset is desired select 0.)");
 		offset = s.nextInt();
 	}
 
 	private void encryption() {
-		String encrypted = rf.encrypt(plainText, key);
-		if (encrypted != null)
-			System.out.println(encrypted);
-		
-		System.err.println("[ERROR] Invalid input.");
+		String encrypted = rf.encrypt(plainText, key, offset);
+		if (encrypted == null) {
+			System.err.println("[ERROR] Invalid input.");
+		}
+		System.out.println(encrypted);
 		
 	}
 
 	private void decryption() {
 		String unencrypted = rf.encrypt(plainText, key, offset);
-		if(unencrypted != null)
-			System.out.println(rf.decrypt(unencrypted, key, offset));
-		
-		System.err.println("[ERROR] Invalid input.");
+		if(unencrypted == null) {
+			System.err.println("[ERROR] Invalid input.");
+		}
+		System.out.println(rf.decrypt(unencrypted, key, offset));
 	}
 
 	private void displayRailFence() {

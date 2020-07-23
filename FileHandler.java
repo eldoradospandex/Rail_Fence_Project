@@ -1,20 +1,49 @@
-/*package ie.gmit.dip;
+package ie.gmit.dip;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+//open stream is used in the IO tutorial
+import java.io.*;
 import java.net.URL;
 
 public class FileHandler {
-	private RailFenceCypher cypher;
-	private FileWriter fw = null;
 
-	public FileHandler(RailFenceCypher c) throws FileNotFoundException, IOException {
+	String fileText = null;
+
+	public String inputReader() {
+		StringBuilder sb = new StringBuilder();
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("in.txt"))));
+			String line = null;
+
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+				fileText = sb.toString();
+				//System.out.println(fileText);
+			}
+			br.close();
+
+		} catch (IOException e) {
+			e.getMessage();
+			e.printStackTrace();
+		}
+
+		return fileText;
+	}
+}
+	
+	/*FileInputStream fis = new FileInputStream(fileName);
+	byte[] buffer = new byte[10];
+	StringBuilder sb = new StringBuilder();while(fis.read(buffer)!=-1)
+	{
+		sb.append(new String(buffer));
+		buffer = new byte[10];
+	}fis.close();
+
+	String inputText = sb.toString();
+}
+}
+
+
+	/*public FileHandler(RailFenceCypher c) throws FileNotFoundException, IOException {
 		cypher = c;
 		
 		parse (new FileInputStream(new File("Stuff.txt")), true);
