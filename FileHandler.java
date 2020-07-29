@@ -1,68 +1,71 @@
 package ie.gmit.dip;
 
-//open stream is used in the IO tutorial
+
 import java.io.*;
 import java.net.URL;
+import java.util.Scanner;
 
 public class FileHandler {
-
 	String fileText = null;
+	Scanner s = new Scanner(System.in);
 
-	public String inputReader() {
+	public String urlReader() {
+
 		StringBuilder sb = new StringBuilder();
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("in.txt"))));
+			URL url = new URL(s.nextLine());
+			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+
 			String line = null;
 
 			while ((line = br.readLine()) != null) {
-				sb.append(line);
+				sb.append((line) + "\n");
 				fileText = sb.toString();
-				//System.out.println(fileText);
 			}
 			br.close();
 
 		} catch (IOException e) {
+			System.err.println("Invalid URL. Please check and try again.");
 			e.getMessage();
-			e.printStackTrace();
 		}
 
 		return fileText;
 	}
-}
-	
-	/*FileInputStream fis = new FileInputStream(fileName);
-	byte[] buffer = new byte[10];
-	StringBuilder sb = new StringBuilder();while(fis.read(buffer)!=-1)
-	{
-		sb.append(new String(buffer));
-		buffer = new byte[10];
-	}fis.close();
 
-	String inputText = sb.toString();
-}
-}
+	public String fileReader() {
+//Need to move exception handling to the menu for this and URL
+		StringBuilder sb = new StringBuilder();
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(s.nextLine()))));
+			String line = null;
 
+			while ((line = br.readLine()) != null) {
+				sb.append((line) + "\n");
+				fileText = sb.toString();
+			}
+			br.close();
 
-	/*public FileHandler(RailFenceCypher c) throws FileNotFoundException, IOException {
-		cypher = c;
-		
-		parse (new FileInputStream(new File("Stuff.txt")), true);
-		parse (new URL("http.stuff.com").openStream(), true);
-
-	}
-
-	public void parse(InputStream in, boolean encrypt) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-		String line;
-
-		while ((line = br.readLine()) != null) {
-			String text = encrypt ? cypher.encrypt(line) : cypher.decrypt(line);
-			fw.write(text);
+		} catch (IOException e) {
+			System.err.println("Cannot locate file. Please check file name and try again.");
+			e.getMessage();
 		}
 
-		br.close();
-		fw.close();
+		return fileText;
+	}
+
+	// fix this, needs better catch
+	public void fileOutput(String output) {
+
+		try {
+			FileWriter fw = new FileWriter(new File("out.txt"));
+			fw.write(output);
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			System.err.println("Cannot write to file.");
+			e.getMessage();
+			e.printStackTrace();
+		}
+
 	}
 }
-*/
